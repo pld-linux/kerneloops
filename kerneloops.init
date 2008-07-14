@@ -10,64 +10,69 @@
 # Source function library.
 . /etc/rc.d/init.d/functions
 
-exec="/usr/sbin/kerneloops"
-prog=$(basename $exec)
 sconf="/etc/kerneloops.conf"
-lockfile=/var/lock/subsys/$prog
 
-[ -e /etc/sysconfig/$prog ] && . /etc/sysconfig/$prog
+OPTS=
+
+# Source config
+if [ -f /etc/sysconfig/kerneloops ] ; then
+	. /etc/sysconfig/kerneloops
+fi
+
 
 start() {
- 	echo -n $"Starting $prog:"
-	daemon $prog  $OPTS
-	retval=$?
-	echo
-	[ $retval -eq 0 ] && touch $lockfile
-	return $retval
+	if [ ! -f /var/lock/subsys/kerneloops ]; then
+		umask 077
+		msg_starting kerneloops
+		daemon kerneloops $OPTS
+		RETVAL=$?
+		[ $RETVAL -eq 0 ] && touch /var/lock/subsys/kerneloops
+	else
+		msg_already_running kerneloops
+	fi
 }
 
 stop() {
-	echo -n $"Stopping $prog: "
-	killproc $prog
-	retval=$?
-	echo
-	[ $retval -eq 0 ] && rm -f $lockfile
-	return $retval
+	if [ -f /var/lock/subsys/kerneloops ]; then
+		msg_stopping kerneloops
+		killproc kerneloops
+		rm -f /var/lock/subsys/kerneloops
+	else
+		msg_not_running kerneloops
+	fi
 }
 
-restart() {
-	stop
-	start
+condrestart() {
+	if [ -f /var/lock/subsys/kerneloops ]; then
+		stop
+		start
+	else
+		msg_not_running kerneloops
+		RETVAL=$1
+																							fi
 }
 
-reload() {
-	restart
-}
-
-force_reload() {
-	restart
-}
-
-fdr_status() {
-	status $prog
-}
-
-
+RETVAL=0
 case "$1" in
-	start|stop|restart|reload)
-  		$1
-		;;
-	force-reload)
-		force_reload
-		;;
-	status)
-		fdr_status
-		;;
-	condrestart|try-restart)
-		[ -f $lockfile ] || restart
-		;;
-	*)
-		echo $"Usage: $0 {start|stop|status|restart|try-restart|reload|force-reload}"
-		exit 1
+  start)
+        start
+        ;;
+  stop)
+        stop
+        ;;
+  restart)
+        stop
+	start
+        ;;
+  try-restart)
+	condrestart 0
+	;;
+  status)
+        status kerneloops
+        ;;
+  *)
+        msg_usage "$0 {start|stop|restart|try-restart|status}"
+        exit 3
 esac
 
+exit $RETVAL
