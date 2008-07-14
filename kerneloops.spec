@@ -2,13 +2,14 @@
 Summary:	Tool to automatically collect and submit kernel crash signatures
 Name:		kerneloops
 Version:	0.11
-Release:	1.1
+Release:	1.2
 License:	GPL v2
 Group:		Base/Kernel
 URL:		http://www.kerneloops.org
 Source0:	http://www.kerneloops.org/download/%{name}-%{version}.tar.gz
 # Source0-md5:	a0daa9437f0638912a91afe66f51545b
 Source1:	%{name}.init
+Source2:	%{name}.sysconfig
 BuildRequires:	curl-devel
 BuildRequires:	dbus-glib-devel
 BuildRequires:	desktop-file-utils
@@ -38,12 +39,13 @@ Linux kernel developers.
 %install
 rm -rf $RPM_BUILD_ROOT
 
-install -d $RPM_BUILD_ROOT/etc/rc.d/init.d/
+install -d $RPM_BUILD_ROOT/etc/{rc.d/init.d,sysconfig}
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
 install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/%{name}
+install %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/%{name}
 
 %find_lang %{name}
 
@@ -66,6 +68,7 @@ fi
 %attr(755,root,root) %{_sbindir}/%{name}
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/kerneloops.conf
 %attr(754,root,root) /etc/rc.d/init.d/%{name}
+%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/sysconfig/%{name}
 /etc/dbus-1/system.d/kerneloops.dbus
 %{_sysconfdir}/xdg/autostart/kerneloops-applet.desktop
 %{_datadir}/kerneloops
