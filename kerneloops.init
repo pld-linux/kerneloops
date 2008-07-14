@@ -63,11 +63,14 @@ case "$1" in
   try-restart)
 	condrestart 0
 	;;
+  force-reload)
+	condrestart 7
+	;;
   status)
 	status kerneloops
 	;;
   *)
-	msg_usage "$0 {start|stop|restart|try-restart|status}"
+	msg_usage "$0 {start|stop|restart|try-restart|force-reload|status}"
 	exit 3
 esac
 
