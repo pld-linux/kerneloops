@@ -15,6 +15,9 @@ BuildRequires:	desktop-file-utils
 BuildRequires:	gettext-devel
 BuildRequires:	gtk+2-devel
 BuildRequires:	libnotify-devel
+BuildRequires:	rpmbuild(macros) >= 1.268
+Requires:	rc-scripts
+BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
 This package contains the tools to collect kernel crash signatures,
@@ -53,8 +56,8 @@ rm -rf $RPM_BUILD_ROOT
 
 %preun
 if [ "$1" = "0" ]; then
-        %service %{name} stop
-        /sbin/chkconfig --del %{name}
+	%service %{name} stop
+	/sbin/chkconfig --del %{name}
 fi
 
 %files -f %{name}.lang
