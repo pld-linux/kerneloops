@@ -1,4 +1,7 @@
-%bcond_without	tests
+#
+# Conditional build:
+%bcond_without	tests		# build without tests
+#
 Summary:	Tool to automatically collect and submit kernel crash signatures
 Name:		kerneloops
 Version:	0.11
@@ -17,6 +20,9 @@ BuildRequires:	gettext-devel
 BuildRequires:	gtk+2-devel
 BuildRequires:	libnotify-devel
 BuildRequires:	rpmbuild(macros) >= 1.268
+%if %{with tests}
+BuildRequires:	valgrind
+%endif
 Requires:	rc-scripts
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -32,7 +38,7 @@ Linux kernel developers.
 %build
 %{__make} \
 	CC="%{__cc}" \
-	CFLAGS="%{rpmcflags}"
+	CFLAGS="%{rpmcflags} -DDBUS_API_SUBJECT_TO_CHANGE"
 
 %{?with_tests:%{__make} tests}
 
