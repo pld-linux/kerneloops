@@ -17,11 +17,10 @@ if [ -f /etc/sysconfig/kerneloops ] ; then
 	. /etc/sysconfig/kerneloops
 fi
 
-
 start() {
 	if [ ! -f /var/lock/subsys/kerneloops ]; then
-		umask 077
 		msg_starting kerneloops
+		umask 077
 		daemon kerneloops
 		RETVAL=$?
 		[ $RETVAL -eq 0 ] && touch /var/lock/subsys/kerneloops
@@ -53,24 +52,24 @@ condrestart() {
 RETVAL=0
 case "$1" in
   start)
-        start
-        ;;
-  stop)
-        stop
-        ;;
-  restart)
-        stop
 	start
-        ;;
+	;;
+  stop)
+	stop
+	;;
+  restart)
+	stop
+	start
+	;;
   try-restart)
 	condrestart 0
 	;;
   status)
-        status kerneloops
-        ;;
+	status kerneloops
+	;;
   *)
-        msg_usage "$0 {start|stop|restart|try-restart|status}"
-        exit 3
+	msg_usage "$0 {start|stop|restart|try-restart|status}"
+	exit 3
 esac
 
 exit $RETVAL
