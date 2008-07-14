@@ -12,8 +12,6 @@
 
 sconf="/etc/kerneloops.conf"
 
-OPTS=
-
 # Source config
 if [ -f /etc/sysconfig/kerneloops ] ; then
 	. /etc/sysconfig/kerneloops
@@ -24,7 +22,7 @@ start() {
 	if [ ! -f /var/lock/subsys/kerneloops ]; then
 		umask 077
 		msg_starting kerneloops
-		daemon kerneloops $OPTS
+		daemon kerneloops
 		RETVAL=$?
 		[ $RETVAL -eq 0 ] && touch /var/lock/subsys/kerneloops
 	else
@@ -49,7 +47,7 @@ condrestart() {
 	else
 		msg_not_running kerneloops
 		RETVAL=$1
-																							fi
+	fi
 }
 
 RETVAL=0
