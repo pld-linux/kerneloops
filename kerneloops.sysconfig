@@ -1,7 +1,7 @@
 # Customized setings for kerneloops
 
 # Nice level for kerneloops
-# SERVICE_RUN_NICE_LEVEL="0"
+# SERVICE_RUN_NICE_LEVEL="+0"
 
 # umask for kerneloops
 SERVICE_UMASK=077
