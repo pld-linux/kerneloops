@@ -1,7 +1,7 @@
 #
 # Conditional build:
 %bcond_without	tests		# build without tests
-#
+
 Summary:	Tool to automatically collect and submit kernel crash signatures
 Name:		kerneloops
 Version:	0.11
@@ -21,7 +21,9 @@ BuildRequires:	gtk+2-devel
 BuildRequires:	libnotify-devel
 BuildRequires:	rpmbuild(macros) >= 1.268
 %if %{with tests}
+%ifnarch %{ix86} %{x8664} ppc ppc64
 BuildRequires:	valgrind
+%endif
 %endif
 Requires:	rc-scripts
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
