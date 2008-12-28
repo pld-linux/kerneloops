@@ -4,15 +4,15 @@
 
 Summary:	Tool to automatically collect and submit kernel crash signatures
 Name:		kerneloops
-Version:	0.11
-Release:	2
+Version:	0.12
+Release:	1
 License:	GPL v2
 Group:		Base/Kernel
-URL:		http://www.kerneloops.org
 Source0:	http://www.kerneloops.org/download/%{name}-%{version}.tar.gz
-# Source0-md5:	a0daa9437f0638912a91afe66f51545b
+# Source0-md5:	97e611e5b09831cb6ee31c31bf2bc286
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
+URL:		http://www.kerneloops.org
 BuildRequires:	curl-devel
 BuildRequires:	dbus-glib-devel
 BuildRequires:	desktop-file-utils
