@@ -20,7 +20,7 @@ fi
 start() {
 	if [ ! -f /var/lock/subsys/kerneloops ]; then
 		msg_starting kerneloops
-		daemon /usr/sbin/kerneloops
+		daemon /usr/sbin/kerneloops --file /var/log/kernel
 		RETVAL=$?
 		[ $RETVAL -eq 0 ] && touch /var/lock/subsys/kerneloops
 	else
