@@ -16,7 +16,7 @@ URL:		http://www.kerneloops.org
 BuildRequires:	curl-devel
 BuildRequires:	dbus-glib-devel
 BuildRequires:	desktop-file-utils
-BuildRequires:	gettext-devel
+BuildRequires:	gettext-tools
 BuildRequires:	gtk+2-devel
 BuildRequires:	libnotify-devel
 BuildRequires:	rpmbuild(macros) >= 1.268
